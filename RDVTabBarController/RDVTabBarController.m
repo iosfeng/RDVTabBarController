@@ -209,7 +209,12 @@
         }
         
         [[weakSelf tabBar] setFrame:CGRectMake(0, tabBarStartingY, viewSize.width, tabBarHeight)];
-        [[weakSelf contentView] setFrame:CGRectMake(0, 0, viewSize.width, contentViewHeight)];
+        
+        if (self.navigationController) {
+            [[weakSelf contentView] setFrame:CGRectMake(0, 64, viewSize.width, contentViewHeight - 64)];
+        } else {
+            [[weakSelf contentView] setFrame:CGRectMake(0, 0, viewSize.width, contentViewHeight)];
+        }
     };
     
     void (^completion)(BOOL) = ^(BOOL finished){

@@ -48,6 +48,12 @@
     
     [self.view addSubview:[self contentView]];
     [self.view addSubview:[self tabBar]];
+    
+    if (self.navigationController
+        && [self respondsToSelector:@selector(edgesForExtendedLayout)]) {
+        // skill 这句很关键.关于在UINavigationController下面布局UIViewController + UITableView
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -209,12 +215,14 @@
         }
         
         [[weakSelf tabBar] setFrame:CGRectMake(0, tabBarStartingY, viewSize.width, tabBarHeight)];
+        [[weakSelf contentView] setFrame:CGRectMake(0, 0, viewSize.width, contentViewHeight)];
         
-        if (self.navigationController && self.navigationController.navigationBar.isTranslucent) {
-            [[weakSelf contentView] setFrame:CGRectMake(0, 64, viewSize.width, contentViewHeight - 64)];
-        } else {
-            [[weakSelf contentView] setFrame:CGRectMake(0, 0, viewSize.width, contentViewHeight)];
-        }
+        //        if (self.navigationController && self.navigationController.navigationBar.isTranslucent) {
+        //            [[weakSelf contentView] setFrame:CGRectMake(0, 64, viewSize.width, contentViewHeight - 64)];
+        //        } else {
+        //            [[weakSelf contentView] setFrame:CGRectMake(0, 0, viewSize.width, contentViewHeight)];
+        //        }
+
     };
     
     void (^completion)(BOOL) = ^(BOOL finished){
